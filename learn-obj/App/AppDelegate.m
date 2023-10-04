@@ -8,6 +8,7 @@
 #import "AppDelegate.h"
 #import "PreVideoBankingUIComposer.h"
 #import "ViewController.h"
+#import "VideoBankingViewController.h"
 
 @interface AppDelegate ()
 

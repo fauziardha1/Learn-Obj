@@ -18,3 +18,9 @@
 @end
 
 @class MySwiftClass;
+
+
+@interface CustomeView : UIView
+@property NSString *title;
+-(instancetype) initWithTitle:(NSString *)title;
+@end

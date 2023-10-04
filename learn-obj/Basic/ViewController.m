@@ -8,6 +8,7 @@
 #import "ViewController.h"
 #import "PreVideoBankingPage.h"
 #import <learn_obj-Swift.h>
+#import "CustomView2.h"
 
 @interface ViewController ()
 
@@ -39,7 +40,6 @@ typedef struct {
     self->_isSingle = YES;
     return self;
 }
-
 @end
 
 
@@ -47,12 +47,33 @@ typedef struct {
 
 UILabel *label;
 UIButton *button;
+CustomeView *customeView;
+CustomView2 *customeView2;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self layout];
+    [self customView];
+}
+
+-(void) customView {
+    customeView = [self createCustomeView];
+    customeView2 = [self createCustomeView2];
+    
+    [self.view addSubview:customeView];
+    [self.view addSubview:customeView2];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [customeView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [customeView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
+        [customeView2.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [customeView2.centerYAnchor constraintEqualToAnchor:customeView.centerYAnchor constant:24],
+        
+    ]];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -75,7 +96,17 @@ UIButton *button;
     [self setupConstraintsForButton];
 }
 
+- (CustomeView *) createCustomeView {
+    CustomeView *view = [[CustomeView alloc] initWithTitle:@"CustomView1"];
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    return view;
+}
 
+- (CustomView2 *) createCustomeView2 {
+    CustomView2 *view = [[CustomView2 alloc] initWithTitle:@"CustomView2"];
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    return view;
+}
 
 - (UILabel *) createLabel {
     UILabel *myLabel = [[UILabel alloc] init];
@@ -107,8 +138,11 @@ UIButton *button;
     NSLog(@"button was pressed!");
     UIViewController *preVideoBankingPage = [[PreVideoBankingPageViewController alloc] init];
     
-    UIStoryboard *ui = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    SwiftUIViewController *controller = [ui instantiateViewControllerWithIdentifier:@"MainStoryBoard"];
+    UIStoryboard *ui = [UIStoryboard storyboardWithName:@"SwiftStoryBoard" bundle:nil];
+    SwiftViewController *controller = [ui instantiateViewControllerWithIdentifier:@"MainStoryBoard"];
+//    controller.delegate = ^{
+//        NSLog(@"Hello From objective c");
+//    };
     
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -200,6 +234,59 @@ UIButton *button;
     [self usingClosure:^(int data) {
         NSLog(@"data times 2 : %d", data*2);
     }];
+}
+
+@end
+
+
+@implementation CustomeView: UIView
+UILabel *label;
+NSString *localTitle = @"default";
+
+
+- (instancetype)init {
+    self = [super init];
+    
+    [self setupLayout];
+    
+    return self;
+}
+
+- (void) setupLayout {
+    label = [self createUILabel];
+    label.text = localTitle;
+    
+    [self addSubview:label];
+    [self setConstraintsForLabel];
+}
+
+-(UILabel *) createUILabel {
+    UILabel *label = [UILabel new];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.text = @"Hello";
+    return label;
+}
+
+-(void) setConstraintsForLabel {
+    [NSLayoutConstraint activateConstraints:@[
+        [label.heightAnchor constraintEqualToConstant:40]
+    ]];
+}
+- (instancetype)initWithTitle:(NSString *)title {
+    self = [super init];
+    localTitle = title;
+    
+    [self setupLayout];
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:CGRectZero];
+    if (self) {
+       
+    }
+    
+    return self;
 }
 
 @end
