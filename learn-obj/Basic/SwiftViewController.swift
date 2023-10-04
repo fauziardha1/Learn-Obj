@@ -7,8 +7,21 @@
 
 import Foundation
 import UIKit
+import Common
 
-class SwiftUIViewController: UIViewController {
+class SwiftViewController: UIViewController {
+//    @objc var delegate: () -> Void = {}
+//    var data: Simple;
+    
+    convenience init(delegate: @escaping () -> Void, data: Simple) {
+        self.init(nibName: nil, bundle: nil)
+    }
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     let label: UILabel = {
         let label = UILabel()
@@ -20,6 +33,8 @@ class SwiftUIViewController: UIViewController {
         super.viewDidLoad()
         print("Log from swift")
         self.view.backgroundColor = .white;
+        
+//        self.delegate()
         
         self.layout()
     }
